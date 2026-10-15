@@ -23,6 +23,11 @@ PlasmoidItem {
     property bool showReboot: plasmoid.configuration.showReboot
     property bool showKexec: plasmoid.configuration.showKexec
     property bool showShutdown: plasmoid.configuration.showShutdown
+    property string customIcon: plasmoid.configuration.customIcon
+
+    // Hide tooltip
+    toolTipMainText: ""
+    toolTipSubText: ""
 
     preferredRepresentation: compactRepresentation
 
@@ -38,7 +43,7 @@ PlasmoidItem {
             executable.connectSource(cmd)
         }
     }
- 
+
     fullRepresentation: PlasmaExtras.Representation {
         id: dialogItem
 
@@ -48,7 +53,7 @@ PlasmoidItem {
 
         Layout.preferredHeight: implicitHeight
 
-        contentItem: ColumnLayout {        
+        contentItem: ColumnLayout {
             PC3.ItemDelegate {
                 id: logoutItem
                 hoverEnabled: true
@@ -56,6 +61,7 @@ PlasmoidItem {
                 text: i18n("Logout")
                 onClicked: {
                     executable.exec("qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logout");
+                    main.expanded = false;
                 }
                 visible: showLogout
                 Layout.fillWidth: true
@@ -68,6 +74,7 @@ PlasmoidItem {
                 icon.name: "system-lock-screen"
                 onClicked: {
                     executable.exec("qdbus org.freedesktop.ScreenSaver /ScreenSaver Lock");
+                    main.expanded = false;
                 }
                 visible: showLockscreen
                 Layout.fillWidth: true
@@ -80,6 +87,7 @@ PlasmoidItem {
                 icon.name: "system-suspend"
                 onClicked: {
                     executable.exec("qdbus org.kde.Solid.PowerManagement /org/freedesktop/PowerManagement Suspend");
+                    main.expanded = false;
                 }
                 visible: showSuspend
                 Layout.fillWidth: true
@@ -92,6 +100,7 @@ PlasmoidItem {
                 icon.name: "system-suspend-hibernate"
                 onClicked: {
                     executable.exec("qdbus org.kde.Solid.PowerManagement /org/freedesktop/PowerManagement Hibernate");
+                    main.expanded = false;
                 }
                 visible: showHibernate
                 Layout.fillWidth: true
@@ -104,6 +113,7 @@ PlasmoidItem {
                 icon.name: "system-reboot"
                 onClicked: {
                     executable.exec("qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logoutAndReboot");
+                    main.expanded = false;
                 }
                 visible: showReboot
                 Layout.fillWidth: true
@@ -115,6 +125,7 @@ PlasmoidItem {
                 icon.name: "system-reboot"
                 onClicked: {
                     executable.exec("qdbus --system org.freedesktop.systemd1 /org/freedesktop/systemd1 org.freedesktop.systemd1.Manager.StartUnit kexec.target replace-irreversibly");
+                    main.expanded = false;
                 }
                 visible: showKexec
                 Layout.fillWidth: true
@@ -127,6 +138,7 @@ PlasmoidItem {
                 icon.name: "system-shutdown"
                 onClicked: {
                     executable.exec("qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logoutAndShutdown");
+                    main.expanded = false;
                 }
                 visible: showShutdown
                 Layout.fillWidth: true
@@ -135,7 +147,7 @@ PlasmoidItem {
     }
 
     compactRepresentation: Kirigami.Icon {
-        source: "system-shutdown"
+        source: main.customIcon.length > 0 ? main.customIcon : "system-shutdown"
         MouseArea {
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton

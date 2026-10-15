@@ -27,5 +27,8 @@
         <entry name="showShutdown" type="Bool">
             <default>true</default>
         </entry>
+        <entry name="customIcon" type="String">
+            <default></default>
+        </entry>
     </group>
 </kcfg>
